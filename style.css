@@ -4,3 +4,30 @@
     margin: 0;
     font-family: 'Poppins', 'Courier New', Courier, monospace;
 }
+
+#gameboard {
+    height: 300px;
+    width: 300px;
+    margin: 0 auto;
+    padding: 1px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border: 1px rebeccapurple solid;
+}
+
+.box {
+    height: 99px;
+    width: 98px;
+    background-color: white;
+    border: 1px gray solid;
+}
+
+.box-hover:hover {
+    background-color: lightgray;
+}
+
+img {
+    height: fit-content;
+    width: fit-content;
+}
