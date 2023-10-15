@@ -57,19 +57,23 @@ const gameBoard = (function () {
         currentPlayer == p1 ? currentPlayer = p2 : currentPlayer = p1;
     }
 
+    function addSign(e) {
+        let element = e.target;
+        let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
+        gameBoardArray[childIdx] = currentPlayer.getSymbol();
+        element.appendChild(currentPlayer.createSymbolImg());
+        this.removeEventListener('click', arguments.callee, false);
+        element.classList.remove('box-hover');
+        switchPlayer();
+    }
+
     function restart() {
         currentPlayer = p1;
         cells.forEach(element => {
             element.classList.add('box-hover');
             element.innerHTML = '';
-            element.addEventListener('click', function() {
-                let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
-                gameBoardArray[childIdx] = currentPlayer.getSymbol();
-                element.appendChild(currentPlayer.createSymbolImg());
-                this.removeEventListener('click', arguments.callee, false);
-                element.classList.remove('box-hover');
-                switchPlayer();
-            });
+            element.removeEventListener('click', addSign);
+            element.addEventListener('click', addSign);
         });
     }
 
