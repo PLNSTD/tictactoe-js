@@ -3,14 +3,16 @@ const createPlayer = (name, playerSign) => {
     let points = 0;
     const symbol = playerSign;
     let symbolImg;
+
     const createSymbolImg = () => {
         if (symbol == 'x') {
-            let xSymbol = document.createElement('img');
-            xSymbol.src = '/icons/x-solid.svg';
+            let xSymbol = document.createElementNS('icons/x-solid.svg', 'svg');
+            // xSymbol.src = 'icons/x-solid.svg';
             symbolImg = xSymbol;
         } else {
-            let oSymbol = document.createElement('img');
-            oSymbol.src = '/icons/o-solid.svg';
+            // let oSymbol = document.createElement('img');
+            let oSymbol = document.createElementNS('icons/o-solid.svg', 'svg');
+            // oSymbol.src = 'icons/o-solid.svg';
             symbolImg = oSymbol;
         }
     }
@@ -59,7 +61,8 @@ const gameBoard = (function () {
         element.addEventListener('click', function() {
             let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
             gameBoardArray[childIdx] = currentPlayer.getSymbol;
-            element.appendChild(currentPlayer.getSymbolImg);
+            console.log(currentPlayer.getSymbolImg);
+            document.getElementById('box-' + (childIdx + 1)).appendChild(currentPlayer.getSymbolImg);
             this.removeEventListener('click', arguments.callee, false);
             element.classList.remove('box-hover');
         });
