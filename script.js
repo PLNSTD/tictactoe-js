@@ -42,9 +42,9 @@ function tryPlayers () {
 
 const gameBoard = (function () {
     const gameBoardArray = [
-        'x','x','o',
-        'o','x','x',
-        'x','o','o'];
+        '','','',
+        '','','',
+        '','',''];
 
     const gameBoardDiv = document.getElementById('gameboard');
     const restartBtn = document.getElementById('restart-button');
@@ -59,11 +59,12 @@ const gameBoard = (function () {
 
     function addSign(e) {
         let element = e.target;
-        let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
+        let childIdx = Array.prototype.indexOf.call(element.parentNode.children, element);
         gameBoardArray[childIdx] = currentPlayer.getSymbol();
         element.appendChild(currentPlayer.createSymbolImg());
         this.removeEventListener('click', arguments.callee, false);
         element.classList.remove('box-hover');
+        checkWin(childIdx);
         switchPlayer();
     }
 
@@ -75,6 +76,83 @@ const gameBoard = (function () {
             element.removeEventListener('click', addSign);
             element.addEventListener('click', addSign);
         });
+    }
+
+    function checkWin(index) {
+       if (checkHorizontal(index)) return true;
+       if (checkVertical(index)) return true;
+       if (checkDiagonal(index)) return true;
+       return false;
+    }
+
+    function checkHorizontal(index) {
+        let columnIndex = index % 3;
+        if (columnIndex == 0) { //first column
+            if (gameBoardArray[index + 1] == currentPlayer.getSymbol() && gameBoardArray[index + 2] == currentPlayer.getSymbol()) {
+                //Win
+            }
+        } else if (columnIndex == 2) { //last column
+            if (gameBoardArray[index - 1] == currentPlayer.getSymbol() && gameBoardArray[index - 2] == currentPlayer.getSymbol()) {
+                //Win
+            }
+        } else { //second column
+            if (gameBoardArray[index + 1] == currentPlayer.getSymbol() && gameBoardArray[index - 1] == currentPlayer.getSymbol()) {
+                //Win
+            }
+        }
+    }
+
+    function checkVertical(index) {
+        let rowIndex = Math.floor(index / 3);
+        // console.log('Inside vert index:' + rowIndex);
+        //checkVertical
+        if (rowIndex == 0) { //first row
+            if (gameBoardArray[index + 3] == currentPlayer.getSymbol() && gameBoardArray[index + 6] == currentPlayer.getSymbol()) {
+                //Win
+            }
+        } else if (rowIndex == 2) { //last row
+            if (gameBoardArray[index - 3] == currentPlayer.getSymbol() && gameBoardArray[index - 6] == currentPlayer.getSymbol()) {
+                //Win
+            }
+        } else { //second row
+            if (gameBoardArray[index + 3] == currentPlayer.getSymbol() && gameBoardArray[index - 3] == currentPlayer.getSymbol()) {
+                //Win
+            }
+        }
+    }
+
+    function checkDiagonal(index) {
+        let rowIndex = Math.floor(index / 3);
+        let columnIndex = index % 3;
+        if (rowIndex == 0 && columnIndex == 0) {
+            if (gameBoardArray[index + 4] == currentPlayer.getSymbol() && gameBoardArray[index + 8] == currentPlayer.getSymbol()) {
+                //Win
+                // console.log('Win diagonal1');
+            }
+        } else if (rowIndex == 1 && columnIndex == 1) {
+            if (gameBoardArray[index + 4] == currentPlayer.getSymbol() && gameBoardArray[index - 4] == currentPlayer.getSymbol()) {
+                //Win
+                //console.log('Win diagonal2');
+            } else if (gameBoardArray[index + 2] == currentPlayer.getSymbol() && gameBoardArray[index - 2] == currentPlayer.getSymbol()) {
+                //Win
+                //console.log('Mid right to left diagonal win');
+            }
+        } else if (rowIndex == 2 && columnIndex == 2) {
+            if (gameBoardArray[index - 4] == currentPlayer.getSymbol() && gameBoardArray[index - 8] == currentPlayer.getSymbol()) {
+                //Win
+                //console.log('Win diagonal3')
+            }
+        } else if (rowIndex == 0 && columnIndex == 2) {
+            if (gameBoardArray[index + 2] == currentPlayer.getSymbol() && gameBoardArray[index + 4] == currentPlayer.getSymbol()) {
+                //Win
+                //console.log('Top-right diagonal win');
+            }
+        } else if (rowIndex == 2 && columnIndex == 0) {
+            if (gameBoardArray[index - 2] == currentPlayer.getSymbol() && gameBoardArray[index - 4] == currentPlayer.getSymbol()) {
+                //Win
+                //console.log('Bot-left diagonal win');
+            }
+        }
     }
 
     restartBtn.addEventListener('click', restart);
