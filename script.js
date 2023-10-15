@@ -2,26 +2,21 @@ const createPlayer = (name, playerSign) => {
     const playerName = name;
     let points = 0;
     const symbol = playerSign;
-    // let symbolImg;
 
     const createSymbolImg = () => {
         if (symbol == 'x') {
             let xSymbol = document.createElement('img');
             xSymbol.src = 'icons/x-solid.svg';
-            // xSymbol.src = 'icons/icons8-x-52.png';
             return xSymbol;
         } else {
             let oSymbol = document.createElement('img');
-            // let oSymbol = document.createElementNS('icons/o-solid.svg', 'svg');
             oSymbol.src = 'icons/o-solid.svg';
-            // oSymbol.src = 'icons/icons8-o-52.png';
             return oSymbol;
         }
     }
-    let symbolImg = createSymbolImg();
     const getPoints = () => points;
     const addPoints = () => points++;
-    const resetPoints = () => {points = 0};
+    const resetPoints = () => points = 0;
     const getSymbol = () => symbol;
 
     return {playerName, getPoints, addPoints, resetPoints, getSymbol, createSymbolImg};
@@ -52,23 +47,35 @@ const gameBoard = (function () {
         'x','o','o'];
 
     const gameBoardDiv = document.getElementById('gameboard');
+    const restartBtn = document.getElementById('restart-button');
     let cells = Array.from(gameBoardDiv.children);
     let p1 = createPlayer('Pi','x');
     let p2 = createPlayer('F','o');
-    let currentPlayer = p1;
-
-    cells.forEach(element => {
-        element.classList.add('box-hover');
-        element.addEventListener('click', function() {
-            let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
-            gameBoardArray[childIdx] = currentPlayer.getSymbol();
-            // document.getElementById('box-' + (childIdx + 1)).appendChild(currentPlayer.getSymbolImg);
-            element.appendChild(currentPlayer.createSymbolImg());
-            this.removeEventListener('click', arguments.callee, false);
-            element.classList.remove('box-hover');
-        });
-    });
+    let currentPlayer;
     
+    function switchPlayer() {
+        currentPlayer == p1 ? currentPlayer = p2 : currentPlayer = p1;
+    }
+
+    function restart() {
+        currentPlayer = p1;
+        cells.forEach(element => {
+            element.classList.add('box-hover');
+            element.innerHTML = '';
+            element.addEventListener('click', function() {
+                let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
+                gameBoardArray[childIdx] = currentPlayer.getSymbol();
+                element.appendChild(currentPlayer.createSymbolImg());
+                this.removeEventListener('click', arguments.callee, false);
+                element.classList.remove('box-hover');
+                switchPlayer();
+            });
+        });
+    }
+
+    restartBtn.addEventListener('click', restart);
+
+
 })();
 
 

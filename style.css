@@ -5,10 +5,17 @@
     font-family: 'Poppins', 'Courier New', Courier, monospace;
 }
 
+#main-container {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    justify-content: center;
+    gap: 20px;
+}
+
 #gameboard {
     height: 300px;
     width: 300px;
-    margin: 0 auto;
     padding: 1px;
     display: flex;
     justify-content: center;
