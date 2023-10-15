@@ -19,6 +19,9 @@
 .box {
     height: 99px;
     width: 98px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: white;
     border: 1px gray solid;
 }
@@ -28,6 +31,6 @@
 }
 
 img {
-    height: fit-content;
-    width: fit-content;
+    height: 75%;
+    margin: 0 auto;
 }

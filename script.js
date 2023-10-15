@@ -2,28 +2,29 @@ const createPlayer = (name, playerSign) => {
     const playerName = name;
     let points = 0;
     const symbol = playerSign;
-    let symbolImg;
+    // let symbolImg;
 
     const createSymbolImg = () => {
         if (symbol == 'x') {
-            let xSymbol = document.createElementNS('icons/x-solid.svg', 'svg');
-            // xSymbol.src = 'icons/x-solid.svg';
-            symbolImg = xSymbol;
+            let xSymbol = document.createElement('img');
+            xSymbol.src = 'icons/x-solid.svg';
+            // xSymbol.src = 'icons/icons8-x-52.png';
+            return xSymbol;
         } else {
-            // let oSymbol = document.createElement('img');
-            let oSymbol = document.createElementNS('icons/o-solid.svg', 'svg');
-            // oSymbol.src = 'icons/o-solid.svg';
-            symbolImg = oSymbol;
+            let oSymbol = document.createElement('img');
+            // let oSymbol = document.createElementNS('icons/o-solid.svg', 'svg');
+            oSymbol.src = 'icons/o-solid.svg';
+            // oSymbol.src = 'icons/icons8-o-52.png';
+            return oSymbol;
         }
     }
-    createSymbolImg();
+    let symbolImg = createSymbolImg();
     const getPoints = () => points;
     const addPoints = () => points++;
     const resetPoints = () => {points = 0};
     const getSymbol = () => symbol;
-    const getSymbolImg = () => symbolImg;
 
-    return {playerName, getPoints, addPoints, resetPoints, getSymbol, getSymbolImg};
+    return {playerName, getPoints, addPoints, resetPoints, getSymbol, createSymbolImg};
 }
 
 function tryPlayers () {
@@ -60,9 +61,9 @@ const gameBoard = (function () {
         element.classList.add('box-hover');
         element.addEventListener('click', function() {
             let childIdx = Array.prototype.indexOf.call(element.parentNode, element);
-            gameBoardArray[childIdx] = currentPlayer.getSymbol;
-            console.log(currentPlayer.getSymbolImg);
-            document.getElementById('box-' + (childIdx + 1)).appendChild(currentPlayer.getSymbolImg);
+            gameBoardArray[childIdx] = currentPlayer.getSymbol();
+            // document.getElementById('box-' + (childIdx + 1)).appendChild(currentPlayer.getSymbolImg);
+            element.appendChild(currentPlayer.createSymbolImg());
             this.removeEventListener('click', arguments.callee, false);
             element.classList.remove('box-hover');
         });
