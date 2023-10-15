@@ -52,10 +52,11 @@ const gameBoard = (function () {
     let cells = Array.from(gameBoardDiv.children);
     const p1 = createPlayer('Pi','x');
     const p2 = createPlayer('F','o');
-    var currentPlayer = p2;
+    let currentPlayer;
     
-    function switchPlayer() {
+    function switchPlayer(currentPlayer) {
         currentPlayer == p1 ? currentPlayer = p2 : currentPlayer = p1;
+        return currentPlayer;
     }
 
     function addSign(e) {
@@ -66,11 +67,11 @@ const gameBoard = (function () {
         this.removeEventListener('click', arguments.callee, false);
         element.classList.remove('box-hover');
         if(checkWin(childIdx)) {
-            displayController.winAnimation();
+            displayController.winAnimation(currentPlayer);
             disableCells();
         }
         else
-            switchPlayer();
+            currentPlayer = switchPlayer(currentPlayer);
     }
 
     function restart() {
@@ -188,15 +189,15 @@ const displayController = (function () {
     restartBtn.innerHTML = 'Play';
     restartBtn.addEventListener('click', gameBoard.restart);
 
-    function winAnimation() {
+    function winAnimation(currentPlayer) {
         console.log('WON');
         let modalDiv = document.getElementById('myModal');
         let congratulationPElement = document.getElementById('winner-paragraph');
         let continuePlayingBtn = document.getElementById('continue-button');
         let closeBtn = document.getElementById('close-button');
         
-        console.log(gameBoard.currentPlayer.getName());
-        congratulationPElement.innerHTML = 'Congratulations ' + gameBoard.currentPlayer.getName() + ' YOU WON!';
+        console.log(currentPlayer.getName());
+        congratulationPElement.innerHTML = 'Congratulations ' + currentPlayer.getName() + ' YOU WON!';
 
         modalDiv.style.display = 'block';
 
